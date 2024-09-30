@@ -159,7 +159,7 @@ const loginWithSSO = async (req, res) => {
         };
 
         // Sign a JWT with a 3-day expiration
-        const token = jwt.sign(payload, process.env.POLYGON_API_KEY, { expiresIn: '3d' });
+        const token = jwt.sign(payload, process.env.JWT_SEC, { expiresIn: '3d' });
 
         res.status(200).json({
             message: "User signed in successfully",
@@ -177,7 +177,7 @@ const loginWithSSO = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const {id} = req.params
-    const { username, email, password} = req.body
+    const { username, email } = req.body
     const updatedAt = Date.now()
     try {
         await admin.auth().updateUser(id, {
@@ -198,6 +198,7 @@ const updateUser = async (req, res) => {
             email: email,
          });
     } catch (error) {
+        console.log('Error updating Expense:', error)
         res.status(500).json({ error: 'Invalid username or password' });
     }
 }
